@@ -1,19 +1,21 @@
-module.exports = ({ env }) => ({
-  defaultConnection: "default",
+const parse = require('pg-connection-string').parse;
+const config = parse(process.env.DATABASE_URL);
+
+module.exports = () => ({
+  defaultConnection: 'default',
   connections: {
     default: {
-      connector: "bookshelf",
+      connector: 'bookshelf',
       settings: {
-        client: "postgres",
-        host: env("DATABASE_HOST"),
-        port: env("DATABASE_PORT"),
-        database: env("DATABASE_NAME"),
-        username: env("DATABASE_USERNAME"),
-        password: env("DATABASE_PASSWORD"),
-        ssl: env.bool("DATABASE_SSL", false) ? {
-          require: true,
+        client: 'postgres',
+        host: config.host,
+        port: config.port,
+        database: config.database,
+        username: config.user,
+        password: config.password,
+        ssl: {
           rejectUnauthorized: false,
-        } : false,
+        },
       },
       options: {},
     },
